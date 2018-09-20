@@ -16,7 +16,6 @@ public class TerrainMap
         
         this.pointDistance = pointDistance;
         map = new int[mapSizeX, mapSizeY];
-        GenTerrain();
     }
 
     public int GetLength(int dimension)
@@ -40,44 +39,6 @@ public class TerrainMap
             return;
 
         map[x, y] = material;
-    }
-
-    void GenTerrain()
-    {
-        for(int px = 0; px < map.GetLength(0); px++)
-        {
-            float stone = Noise(px * pointDistance, 0, 80, 15, 1);
-            stone += Noise(px * pointDistance, 0, 50, 30, 1);
-            stone += Noise(px * pointDistance, 0, 10, 10, 1);
-            stone += 75;
-            stone /= pointDistance;
-
-            float dirt = Noise(px * pointDistance, 0, 100, 35, 1);
-            dirt += Noise(px * pointDistance, 0, 50, 30, 1);
-            dirt += 75;
-            dirt /= pointDistance;
-
-            for(int py = 0; py < map.GetLength(1); py++)
-            {
-                if(py < stone)
-                {
-                    map[px, py] = 1;
-
-                    if(Noise(px * pointDistance, py * pointDistance, 12, 16, 1) > 10)
-                        map[px, py] = 2;
-
-                    if(Noise(px * pointDistance, py * pointDistance * 2, 16, 14, 1) > 10)
-                        map[px, py] = 0;
-                }
-                else if(py < dirt)
-                    map[px, py] = 2;
-            }
-        }
-    }
-
-    int Noise(float x, float y, float scale, float mag, float exp)
-    {
-        return (int) Mathf.Pow (Mathf.PerlinNoise(x / scale, y / scale) * mag, exp);
     }
 
     public Color GetColor(int material)

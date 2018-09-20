@@ -26,6 +26,11 @@ public static class TerrainMeshGenerator
         mesh.colors32 = newVertexColors.ToArray();
         mesh.RecalculateNormals();
 
+        newVertices.Clear();
+        newTriangles.Clear();
+        newVertexColors.Clear();
+        vertexCount = 0;
+
         return mesh;
     }
 
