@@ -46,14 +46,16 @@ public class TerrainMap
     {
         for(int px = 0; px < map.GetLength(0); px++)
         {
-            int stone = Noise(px, 0, 80, 15, 1);
-            stone += Noise(px, 0, 50, 30, 1);
-            stone += Noise(px, 0, 10, 10, 1);
-            stone += Mathf.RoundToInt(map.GetLength(1) * .585f);
+            float stone = Noise(px * pointDistance, 0, 80, 15, 1);
+            stone += Noise(px * pointDistance, 0, 50, 30, 1);
+            stone += Noise(px * pointDistance, 0, 10, 10, 1);
+            stone += 75;
+            stone /= pointDistance;
 
-            int dirt = Noise(px, 0, 100, 35, 1);
-            dirt += Noise(px, 0, 50, 30, 1);
-            dirt += Mathf.RoundToInt(map.GetLength(1) * .585f);
+            float dirt = Noise(px * pointDistance, 0, 100, 35, 1);
+            dirt += Noise(px * pointDistance, 0, 50, 30, 1);
+            dirt += 75;
+            dirt /= pointDistance;
 
             for(int py = 0; py < map.GetLength(1); py++)
             {
@@ -61,10 +63,10 @@ public class TerrainMap
                 {
                     map[px, py] = 1;
 
-                    if(Noise(px, py, 12, 16, 1) > 10)
+                    if(Noise(px * pointDistance, py * pointDistance, 12, 16, 1) > 10)
                         map[px, py] = 2;
 
-                    if(Noise(px, py * 2, 16, 14, 1) > 10)
+                    if(Noise(px * pointDistance, py * pointDistance * 2, 16, 14, 1) > 10)
                         map[px, py] = 0;
                 }
                 else if(py < dirt)

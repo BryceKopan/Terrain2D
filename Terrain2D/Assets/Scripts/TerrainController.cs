@@ -6,7 +6,7 @@ public class TerrainController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        TerrainMap tMap = new TerrainMap(92, 128, 1);        
+        TerrainMap tMap = new TerrainMap(92, 128, .5f);        
 
         GetComponent<MeshFilter>().mesh = TerrainMeshGenerator.CreateMeshFilter(tMap);
 		
