@@ -7,6 +7,7 @@ public static class TerrainMeshGenerator
     static List<int> newTriangles = new List<int>();
     static List<Color32> newVertexColors = new List<Color32>();
     static int vertexCount = 0;
+    static float pointDistance;
 
     static List<Vector3> colVertices = new List<Vector3>();
     static List<int> colTriangles = new List<int>();
@@ -15,6 +16,7 @@ public static class TerrainMeshGenerator
     public static Mesh CreateMeshFilter(TerrainMap tMap)
     {
         Mesh mesh = new Mesh();
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
         BuildMesh(tMap);
         
@@ -31,6 +33,7 @@ public static class TerrainMeshGenerator
     {
         int xLength = tMap.GetLength(0);
         int yLength = tMap.GetLength(1);
+        pointDistance = tMap.pointDistance;
 
         for(int x = 0; x < xLength; x++)
         {
@@ -64,11 +67,13 @@ public static class TerrainMeshGenerator
         }
     }
 
-    static void GenTriBottomLeft(int x, int y, Color32 color)
+    static void GenTriBottomLeft(float x, float y, Color32 color)
     {
+        x = x * pointDistance;
+        y = y * pointDistance;
         newVertices.Add(new Vector3(x, y, 0));
-        newVertices.Add(new Vector3(x, y + 1, 0));
-        newVertices.Add(new Vector3(x + 1, y, 0));
+        newVertices.Add(new Vector3(x, y + pointDistance, 0));
+        newVertices.Add(new Vector3(x + pointDistance, y, 0));
     
         newTriangles.Add(vertexCount);
         newTriangles.Add(vertexCount + 1);
@@ -81,10 +86,12 @@ public static class TerrainMeshGenerator
         vertexCount += 3;
     }
 
-    static void GenTriTopLeft(int x, int y, Color32 color)
+    static void GenTriTopLeft(float x, float y, Color32 color)
     {
-        newVertices.Add(new Vector3(x, y + 1, 0));
-        newVertices.Add(new Vector3(x + 1, y + 1, 0));
+        x = x * pointDistance;
+        y = y * pointDistance;
+        newVertices.Add(new Vector3(x, y + pointDistance, 0));
+        newVertices.Add(new Vector3(x + pointDistance, y + pointDistance, 0));
         newVertices.Add(new Vector3(x, y, 0));
     
         newTriangles.Add(vertexCount);
@@ -98,11 +105,13 @@ public static class TerrainMeshGenerator
         vertexCount += 3;
     }
 
-    static void GenTriTopRight(int x, int y, Color32 color)
+    static void GenTriTopRight(float x, float y, Color32 color)
     {
-        newVertices.Add(new Vector3(x + 1, y + 1, 0));
-        newVertices.Add(new Vector3(x + 1, y, 0));
-        newVertices.Add(new Vector3(x, y + 1, 0));
+        x = x * pointDistance;
+        y = y * pointDistance;
+        newVertices.Add(new Vector3(x + pointDistance, y + pointDistance, 0));
+        newVertices.Add(new Vector3(x + pointDistance, y, 0));
+        newVertices.Add(new Vector3(x, y + pointDistance, 0));
     
         newTriangles.Add(vertexCount);
         newTriangles.Add(vertexCount + 1);
@@ -115,11 +124,13 @@ public static class TerrainMeshGenerator
         vertexCount += 3;
     }
 
-    static void GenTriBottomRight(int x, int y, Color32 color)
+    static void GenTriBottomRight(float x, float y, Color32 color)
     {
-        newVertices.Add(new Vector3(x + 1, y, 0));
+        x = x * pointDistance;
+        y = y * pointDistance;
+        newVertices.Add(new Vector3(x + pointDistance, y, 0));
         newVertices.Add(new Vector3(x, y, 0));
-        newVertices.Add(new Vector3(x + 1, y + 1, 0));
+        newVertices.Add(new Vector3(x + pointDistance, y + pointDistance, 0));
     
         newTriangles.Add(vertexCount);
         newTriangles.Add(vertexCount + 1);

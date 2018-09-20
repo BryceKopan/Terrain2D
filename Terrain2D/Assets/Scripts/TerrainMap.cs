@@ -4,11 +4,18 @@ enum Materials{Empty, Stone, Dirt};
 
 public class TerrainMap
 {
-    private int[,] map;
+    int[,] map;
+    public float pointDistance;
 
-    public TerrainMap(int mapWidth, int mapHeight)
+    public TerrainMap(int mapWidth, int mapHeight, 
+            float pointDistance = 1)
     {
-        map = new int[mapWidth, mapHeight];
+        int mapSizeX, mapSizeY;
+        mapSizeX = Mathf.RoundToInt(mapWidth / pointDistance);
+        mapSizeY = Mathf.RoundToInt(mapHeight / pointDistance);
+        
+        this.pointDistance = pointDistance;
+        map = new int[mapSizeX, mapSizeY];
         GenTerrain();
     }
 
@@ -42,11 +49,11 @@ public class TerrainMap
             int stone = Noise(px, 0, 80, 15, 1);
             stone += Noise(px, 0, 50, 30, 1);
             stone += Noise(px, 0, 10, 10, 1);
-            stone += 75;
+            stone += Mathf.RoundToInt(map.GetLength(1) * .585f);
 
             int dirt = Noise(px, 0, 100, 35, 1);
             dirt += Noise(px, 0, 50, 30, 1);
-            dirt += 75;
+            dirt += Mathf.RoundToInt(map.GetLength(1) * .585f);
 
             for(int py = 0; py < map.GetLength(1); py++)
             {
@@ -57,7 +64,7 @@ public class TerrainMap
                     if(Noise(px, py, 12, 16, 1) > 10)
                         map[px, py] = 2;
 
-                    if(Noise(px, py*2, 16, 14, 1) > 10)
+                    if(Noise(px, py * 2, 16, 14, 1) > 10)
                         map[px, py] = 0;
                 }
                 else if(py < dirt)
@@ -66,7 +73,7 @@ public class TerrainMap
         }
     }
 
-    int Noise(int x, int y, float scale, float mag, float exp)
+    int Noise(float x, float y, float scale, float mag, float exp)
     {
         return (int) Mathf.Pow (Mathf.PerlinNoise(x / scale, y / scale) * mag, exp);
     }
