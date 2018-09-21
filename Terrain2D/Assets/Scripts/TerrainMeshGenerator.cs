@@ -13,6 +13,8 @@ public static class TerrainMeshGenerator
     static List<int> colTriangles = new List<int>();
     static int colTriangleCount;
 
+    public static bool blended = false;
+
     public static Mesh CreateMeshFilter(TerrainMap tMap)
     {
         Mesh mesh = new Mesh();
@@ -49,11 +51,23 @@ public static class TerrainMeshGenerator
                 {
                     if(tMap.Get(x, y) != (int) Materials.Empty)
                     {
-                        GenTriBottomLeft(x, y, tMap.GetColor(tMap.Get(x, y)));
+                        Color color1, color2, color3;
+                        color1 = tMap.GetColor(tMap.Get(x, y));
+                        color2 = tMap.GetColor(tMap.Get(x, y + 1));
+                        color3 = tMap.GetColor(tMap.Get(x + 1, y));
+                        if(!blended)
+                            color3 = color2 = color1;
+                        GenTriBottomLeft(x, y, color1, color2, color3);
                     } 
                     if(tMap.Get(x + 1, y + 1) != (int) Materials.Empty)
                     {
-                        GenTriTopRight(x, y, tMap.GetColor(tMap.Get(x + 1, y + 1)));
+                        Color color1, color2, color3;
+                        color1 = tMap.GetColor(tMap.Get(x + 1, y + 1));
+                        color2 = tMap.GetColor(tMap.Get(x + 1, y));
+                        color3 = tMap.GetColor(tMap.Get(x, y + 1));
+                        if(!blended)
+                            color3 = color2 = color1;
+                        GenTriTopRight(x, y, color1, color2, color3);
                     }
                 }
                 else if(tMap.Get(x, y) != (int) Materials.Empty 
@@ -61,18 +75,30 @@ public static class TerrainMeshGenerator
                 {
                     if(tMap.Get(x + 1, y) != (int) Materials.Empty)
                     {
-                        GenTriBottomRight(x, y, tMap.GetColor(tMap.Get(x + 1, y)));
+                        Color color1, color2, color3;
+                        color1 = tMap.GetColor(tMap.Get(x + 1, y));
+                        color2 = tMap.GetColor(tMap.Get(x, y));
+                        color3 = tMap.GetColor(tMap.Get(x + 1, y + 1));
+                        if(!blended)
+                            color3 = color2 = color1;
+                        GenTriBottomRight(x, y, color1, color2, color3);
                     }
                     if(tMap.Get(x, y + 1) != (int) Materials.Empty)
                     {
-                        GenTriTopLeft(x, y, tMap.GetColor(tMap.Get(x, y + 1)));
+                        Color color1, color2, color3;
+                        color1 = tMap.GetColor(tMap.Get(x, y + 1));
+                        color2 = tMap.GetColor(tMap.Get(x + 1, y + 1));
+                        color3 = tMap.GetColor(tMap.Get(x, y));
+                        if(!blended)
+                            color3 = color2 = color1;
+                        GenTriTopLeft(x, y, color1, color2, color3);
                     }
                 } 
             }
         }
     }
 
-    static void GenTriBottomLeft(float x, float y, Color32 color)
+    static void GenTriBottomLeft(float x, float y, Color32 color1, Color32 color2, Color32 color3)
     {
         x = x * pointDistance;
         y = y * pointDistance;
@@ -84,14 +110,14 @@ public static class TerrainMeshGenerator
         newTriangles.Add(vertexCount + 1);
         newTriangles.Add(vertexCount + 2);
 
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
+        newVertexColors.Add(color1);
+        newVertexColors.Add(color2);
+        newVertexColors.Add(color3);
 
         vertexCount += 3;
     }
 
-    static void GenTriTopLeft(float x, float y, Color32 color)
+    static void GenTriTopLeft(float x, float y, Color32 color1, Color32 color2, Color32 color3)
     {
         x = x * pointDistance;
         y = y * pointDistance;
@@ -103,14 +129,14 @@ public static class TerrainMeshGenerator
         newTriangles.Add(vertexCount + 1);
         newTriangles.Add(vertexCount + 2);
 
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
+        newVertexColors.Add(color1);
+        newVertexColors.Add(color2);
+        newVertexColors.Add(color3);
 
         vertexCount += 3;
     }
 
-    static void GenTriTopRight(float x, float y, Color32 color)
+    static void GenTriTopRight(float x, float y, Color32 color1, Color32 color2, Color32 color3)
     {
         x = x * pointDistance;
         y = y * pointDistance;
@@ -122,14 +148,14 @@ public static class TerrainMeshGenerator
         newTriangles.Add(vertexCount + 1);
         newTriangles.Add(vertexCount + 2);
 
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
+        newVertexColors.Add(color1);
+        newVertexColors.Add(color2);
+        newVertexColors.Add(color3);
 
         vertexCount += 3;
     }
 
-    static void GenTriBottomRight(float x, float y, Color32 color)
+    static void GenTriBottomRight(float x, float y, Color32 color1, Color32 color2, Color32 color3)
     {
         x = x * pointDistance;
         y = y * pointDistance;
@@ -141,9 +167,9 @@ public static class TerrainMeshGenerator
         newTriangles.Add(vertexCount + 1);
         newTriangles.Add(vertexCount + 2);
 
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
-        newVertexColors.Add(color);
+        newVertexColors.Add(color1);
+        newVertexColors.Add(color2);
+        newVertexColors.Add(color3);
 
         vertexCount += 3;
     }
