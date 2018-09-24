@@ -1,6 +1,6 @@
 using UnityEngine;
 
-enum Materials{Empty, Stone, Dirt};
+enum Materials{Empty, Stone, Dirt, Nest};
 
 public class TerrainMap
 {
@@ -50,7 +50,10 @@ public class TerrainMap
 
             case (int) Materials.Dirt:
                 return new Color32(139, 69 ,19, 1);
-        }
+
+			case (int) Materials.Nest:
+				return new Color32(160, 82, 45, 1);
+		}
         return new Color32(255, 0, 255, 1);
     }
 }

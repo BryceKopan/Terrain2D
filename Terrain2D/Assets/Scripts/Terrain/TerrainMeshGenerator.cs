@@ -9,10 +9,6 @@ public static class TerrainMeshGenerator
     static int vertexCount = 0;
     static float pointDistance;
 
-    static List<Vector3> colVertices = new List<Vector3>();
-    static List<int> colTriangles = new List<int>();
-    static int colTriangleCount;
-
     public static bool vertexBlended = false;
     public static bool triangleBlended = false;
     public static bool vertexMajority = false;
@@ -30,13 +26,24 @@ public static class TerrainMeshGenerator
         mesh.colors32 = newVertexColors.ToArray();
         mesh.RecalculateNormals();
 
-        newVertices.Clear();
-        newTriangles.Clear();
-        newVertexColors.Clear();
-        vertexCount = 0;
-
         return mesh;
     }
+
+	public static Mesh CreateCollisionMesh()
+	{
+		Mesh newMesh = new Mesh();
+		newMesh.vertices = newVertices.ToArray();
+		newMesh.triangles = newTriangles.ToArray();
+		return newMesh;
+	}
+
+	public static void ClearMeshData() 
+	{
+		newVertices.Clear();
+		newTriangles.Clear();
+		newVertexColors.Clear();
+		vertexCount = 0;
+	}
 
     static void BuildMesh(TerrainMap tMap)
     {
@@ -49,9 +56,9 @@ public static class TerrainMeshGenerator
         {
             for(int y = 0; y < yLength; y++)
             {
-                if(tMap.Get(x, y) != (int) Materials.Empty 
-                        && tMap.Get(x + 1, y + 1) != (int) Materials.Empty
-                        && tMap.Get(x, y + 1) == tMap.Get(x + 1, y)) 
+				if (tMap.Get(x, y) != (int)Materials.Empty
+						&& tMap.Get(x + 1, y + 1) != (int)Materials.Empty
+						&& tMap.Get(x, y) == tMap.Get(x + 1, y + 1))
                 {
                     if(tMap.Get(x + 1, y) != (int) Materials.Empty)
                     {
