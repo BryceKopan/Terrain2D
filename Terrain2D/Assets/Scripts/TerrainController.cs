@@ -6,9 +6,14 @@ public class TerrainController : MonoBehaviour {
     public float PointDistance = 1f;
     private float pointDistance;
 
-    public bool Blended;
-    private bool blended;
+    public bool TriangleBlended;
+    private bool triangleBlended;
 
+    public bool VertexBlended;
+    private bool vertexBlended;
+
+    public bool VertexMajority;
+    private bool vertexMajority;
 	// Use this for initialization
 	void Start ()
     {
@@ -25,10 +30,22 @@ public class TerrainController : MonoBehaviour {
             pointDistance = PointDistance;
             Gen();
         }
-        if(Blended != blended)
+        if(TriangleBlended != triangleBlended)
         {
-            blended = Blended;
-            TerrainMeshGenerator.blended = blended;
+            triangleBlended = TriangleBlended;
+            TerrainMeshGenerator.triangleBlended = triangleBlended;
+            Gen();
+        }
+        if(VertexBlended != vertexBlended)
+        {
+            vertexBlended = VertexBlended;
+            TerrainMeshGenerator.vertexBlended = vertexBlended;
+            Gen();
+        }
+        if(VertexMajority != vertexMajority)
+        {
+            vertexMajority = VertexMajority;
+            TerrainMeshGenerator.vertexMajority = vertexMajority;
             Gen();
         }
 	}
